@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">OpenCVModel</string>
+    <string name="face_detect_text">人脸检测</string>
+</resources>
