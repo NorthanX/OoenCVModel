@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -49,6 +50,7 @@ public class DetectActivity extends AppCompatActivity implements
         cameraView.enableView();
         Button switchCamera = (Button) findViewById(R.id.switch_camera);
         switchCamera.setOnClickListener(this); // 切换相机镜头，默认后置
+
     }
 
     @Override
@@ -65,7 +67,7 @@ public class DetectActivity extends AppCompatActivity implements
                 }
                 cameraView.enableView();
                 break;
-            default:
+                default:
         }
     }
 
@@ -75,6 +77,7 @@ public class DetectActivity extends AppCompatActivity implements
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        Toast.makeText(this,"仅支持横屏摄像", Toast.LENGTH_SHORT).show();
     }
 
     // 初始化人脸级联分类器，必须先初始化
@@ -119,10 +122,11 @@ public class DetectActivity extends AppCompatActivity implements
         if (isFrontCamera) {
             Core.flip(mRgba, mRgba, 1);
             Core.flip(mGray, mGray, 1);
-        } else {
-            Core.flip(mRgba, mRgba, -1);
-            Core.flip(mGray, mGray, -1);
         }
+//        else {
+//            Core.flip(mRgba, mRgba, -1);
+//            Core.flip(mGray, mGray, -1);
+//        }
         float mRelativeFaceSize = 0.2f;
         if (mAbsoluteFaceSize == 0) {
             int height = mGray.rows();
