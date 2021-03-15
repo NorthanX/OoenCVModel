@@ -14,6 +14,7 @@ import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
@@ -123,10 +124,7 @@ public class DetectActivity extends AppCompatActivity implements
             Core.flip(mRgba, mRgba, 1);
             Core.flip(mGray, mGray, 1);
         }
-//        else {
-//            Core.flip(mRgba, mRgba, -1);
-//            Core.flip(mGray, mGray, -1);
-//        }
+
         float mRelativeFaceSize = 0.2f;
         if (mAbsoluteFaceSize == 0) {
             int height = mGray.rows();
@@ -138,10 +136,20 @@ public class DetectActivity extends AppCompatActivity implements
         if (classifier != null)
             classifier.detectMultiScale(mGray, faces, 1.1, 2, 2,
                     new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+        //脸所在的矩形框
         Rect[] facesArray = faces.toArray();
-        Scalar faceRectColor = new Scalar(0, 255, 0, 255);
-        for (Rect faceRect : facesArray)
-            Imgproc.rectangle(mRgba, faceRect.tl(), faceRect.br(), faceRectColor, 3);
+
+        //框的颜色
+        Scalar faceRectColor = new Scalar(0, 0, 255, 255);
+
+
+
+        //打矩形框
+        for (Rect faceRect : facesArray){
+//            Imgproc.rectangle(mRgba, faceRect.tl(), faceRect.br(), faceRectColor, 5);
+            Mat tmp_face = new Mat(mRgba, faceRect);
+            Imgproc.blur(tmp_face,tmp_face,  new Size(200,200));
+        }
         return mRgba;
     }
 
